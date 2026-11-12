@@ -1690,7 +1690,11 @@ class SvgCanvas2D extends AbstractCanvas2D {
   ) {
     const s = this.state;
 
-    if (s.fontBackgroundColor != null || s.fontBorderColor != null) {
+    // The setters store NONE rather than null (mxGraph stored null), so NONE must also mean "no background"
+    if (
+      (s.fontBackgroundColor != null && s.fontBackgroundColor !== NONE) ||
+      (s.fontBorderColor != null && s.fontBorderColor !== NONE)
+    ) {
       let bbox = null;
 
       if (overflow === 'fill' || overflow === 'width') {

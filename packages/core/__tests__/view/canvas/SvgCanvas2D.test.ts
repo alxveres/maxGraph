@@ -47,3 +47,32 @@ describe('SvgCanvas2D.convertHtml', () => {
     expect(canvas.convertHtml(input)).toBe(expected);
   });
 });
+
+describe('SvgCanvas2D.addTextBackground', () => {
+  test.each([
+    ['no background nor border (default NONE values)', undefined, undefined, 0],
+    ['explicit NONE values', constants.NONE, constants.NONE, 0],
+    ['background color', 'yellow', undefined, 1],
+    ['border color', undefined, 'black', 1],
+  ])('%s', (_description, background, border, expectedRectCount) => {
+    const canvas = createSvgCanvas2D();
+    if (background) canvas.setFontBackgroundColor(background);
+    if (border) canvas.setFontBorderColor(border);
+    const textNode = document.createElementNS(constants.NS_SVG, 'g');
+
+    // 'fill' overflow computes the bounds from the arguments, so getBBox (not implemented by jsdom) is not called
+    canvas.addTextBackground(
+      textNode,
+      'label',
+      10,
+      10,
+      40,
+      20,
+      'center',
+      'middle',
+      'fill'
+    );
+
+    expect(textNode.querySelectorAll('rect')).toHaveLength(expectedRectCount);
+  });
+});

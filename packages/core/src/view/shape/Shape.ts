@@ -275,7 +275,7 @@ class Shape {
    * Allows to use the SVG bounding box in SVG. Default is false for performance
    * reasons.
    */
-  useSvgBoundingBox = true;
+  useSvgBoundingBox = false;
 
   image: ImageBox | null = null;
 
